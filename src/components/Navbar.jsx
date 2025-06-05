@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { HiUserCircle, HiLogout, HiMenu } from "react-icons/hi";
 import {
   FiHome,
@@ -9,12 +9,14 @@ import {
   FiUserPlus,
 } from "react-icons/fi";
 
-export default function Navbar() {
+function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
   const mobileMenuRef = useRef(null);
+
+  const navigate = useNavigate();
 
   const userName = "User123";
   const userEmail = "user123@gmail.com";
@@ -56,6 +58,13 @@ export default function Navbar() {
     };
   }, []);
 
+  // Handler khusus untuk Evaluasi Diri klik (desktop & mobile)
+  const handleEvaluasiClick = (e) => {
+    e.preventDefault();
+    setMobileMenuOpen(false);
+    navigate("/intro-evaluasi");
+  };
+
   return (
     <header className="bg-background shadow-sm sticky top-0 z-50">
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-2 flex items-center justify-between">
@@ -81,12 +90,13 @@ export default function Navbar() {
           >
             Beranda
           </Link>
-          <Link
-            to="/evaluasi-diri"
-            className="text-black/60 font-medium hover:underline text-md"
+          <a
+            href="/intro-evaluasi"
+            onClick={handleEvaluasiClick}
+            className="text-black/60 font-medium hover:underline text-md cursor-pointer"
           >
             Evaluasi Diri
-          </Link>
+          </a>
           <Link
             to="/berita"
             className="text-black/60 font-medium hover:underline text-md"
@@ -178,7 +188,11 @@ export default function Navbar() {
       </div>
 
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 bg-black bg-opacity-40 flex">
+        <div
+          className="fixed inset-0 z-50 flex backdrop-blur-sm bg-transparent"
+          // backdrop-blur-sm: memberikan blur pada background
+          // bg-transparent: transparan tanpa hitam overlay
+        >
           <div
             ref={mobileMenuRef}
             className="bg-secondary w-3/4 sm:w-1/2 h-screen p-6 shadow-lg flex flex-col"
@@ -246,22 +260,13 @@ export default function Navbar() {
                 </div>
               </NavLink>
 
-              <NavLink
-                to="/evaluasi-diri"
-                onClick={toggleMobileMenu}
-                className={({ isActive }) =>
-                  `w-full px-4 py-2 rounded-xl text-left font-medium transition text-accent ${
-                    isActive
-                      ? "bg-white text-accent"
-                      : "text-black bg-secondary hover:bg-white"
-                  }`
-                }
+              <button
+                onClick={handleEvaluasiClick}
+                className="w-full text-left px-4 py-2 rounded-xl font-medium transition text-accent bg-secondary text-black hover:bg-white flex items-center gap-2"
               >
-                <div className="flex items-center gap-2">
-                  <FiUserCheck className="w-5 h-5 text-accent" />
-                  Evaluasi Diri
-                </div>
-              </NavLink>
+                <FiUserCheck className="w-5 h-5 text-accent" />
+                Evaluasi Diri
+              </button>
 
               <NavLink
                 to="/berita"
@@ -270,7 +275,7 @@ export default function Navbar() {
                   `w-full px-4 py-2 rounded-xl text-left font-medium transition text-accent ${
                     isActive
                       ? "bg-white text-accent"
-                      : "text-black bg-secondary hover:bg-white"
+                      : "bg-secondary text-black hover:bg-white"
                   }`
                 }
               >
@@ -280,26 +285,7 @@ export default function Navbar() {
                 </div>
               </NavLink>
 
-              {isLoggedIn && (
-                <NavLink
-                  to="/logout"
-                  onClick={toggleMobileMenu}
-                  className={({ isActive }) =>
-                    `w-full px-4 py-2 rounded-xl text-left font-medium transition text-accent ${
-                      isActive
-                        ? "bg-white text-accent"
-                        : "text-black bg-secondary hover:bg-white"
-                    }`
-                  }
-                >
-                  <div className="flex items-center gap-2">
-                    <HiLogout className="w-5 h-5 text-accent" />
-                    Logout
-                  </div>
-                </NavLink>
-              )}
-
-              {!isLoggedIn && (
+              {!isLoggedIn ? (
                 <>
                   <NavLink
                     to="/masuk"
@@ -308,7 +294,7 @@ export default function Navbar() {
                       `w-full px-4 py-2 rounded-xl text-left font-medium transition text-accent ${
                         isActive
                           ? "bg-white text-accent"
-                          : " text-black bg-secondary hover:bg-white"
+                          : "bg-secondary text-black hover:bg-white"
                       }`
                     }
                   >
@@ -317,6 +303,7 @@ export default function Navbar() {
                       Masuk
                     </div>
                   </NavLink>
+
                   <NavLink
                     to="/daftar"
                     onClick={toggleMobileMenu}
@@ -324,7 +311,7 @@ export default function Navbar() {
                       `w-full px-4 py-2 rounded-xl text-left font-medium transition text-accent ${
                         isActive
                           ? "bg-white text-accent"
-                          : "bg-secondary hover:bg-white text-black"
+                          : "bg-secondary text-black hover:bg-white"
                       }`
                     }
                   >
@@ -334,23 +321,51 @@ export default function Navbar() {
                     </div>
                   </NavLink>
                 </>
+              ) : (
+                <>
+                  <NavLink
+                    to="/profile"
+                    onClick={toggleMobileMenu}
+                    className={({ isActive }) =>
+                      `w-full px-4 py-2 rounded-xl text-left font-medium transition text-accent ${
+                        isActive
+                          ? "bg-white text-accent"
+                          : "bg-secondary text-black hover:bg-white"
+                      }`
+                    }
+                  >
+                    <div className="flex items-center gap-2">
+                      <HiUserCircle className="w-5 h-5 text-accent" />
+                      Profile
+                    </div>
+                  </NavLink>
+
+                  <button
+                    onClick={() => {
+                      handleLogout();
+                      setMobileMenuOpen(false);
+                    }}
+                    className="w-full text-left px-4 py-2 rounded-xl font-medium transition text-accent bg-secondary text-black hover:bg-white flex items-center gap-2"
+                    type="button"
+                  >
+                    <HiLogout className="w-5 h-5 text-accent" />
+                    Logout
+                  </button>
+                </>
               )}
             </nav>
-            {isLoggedIn && (
-              <div className="flex items-center gap-2 mt-auto px-4 py-2 border-gray-300">
-                <img
-                  src="/images/SEHATI.png"
-                  alt="Logo Sehati"
-                  className="w-16 h-16 object-contain"
-                />
-                <span className="text-4xl font-popins font-semibold text-purple-900 select-none">
-                  SEHATI
-                </span>
-              </div>
-            )}
           </div>
+
+          {/* Klik area blur di luar sidebar untuk close mobile menu */}
+          <div
+            className="flex-1"
+            onClick={() => setMobileMenuOpen(false)}
+            aria-hidden="true"
+          />
         </div>
       )}
     </header>
   );
 }
+
+export default Navbar;
