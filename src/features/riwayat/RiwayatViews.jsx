@@ -10,9 +10,9 @@ const levelColor = {
   Tinggi: "bg-red-500 text-white",
 };
 
-export default function RiwayatView() {
+export default function RiwayatViews() {
   const [riwayat, setRiwayat] = useState([]);
-  const navigate = useNavigate(); // <-- Tambahkan ini agar bisa pakai navigate
+  const navigate = useNavigate();
 
   useEffect(() => {
     const data = getRiwayatData();
@@ -34,9 +34,10 @@ export default function RiwayatView() {
 
           <h2 className="text-lg font-semibold">User123</h2>
           <p className="text-sm text-gray-600 mb-3">user123@gmail.com</p>
-          <button 
-          onClick={() => navigate("/profil")}
-          className="bg-white border border-accent px-4 py-2 rounded-md text-sm hover:bg-accent hover:text-white transition">
+          <button
+            onClick={() => navigate("/profil")}
+            className="bg-white border border-accent px-4 py-2 rounded-md text-sm hover:bg-accent hover:text-white transition"
+          >
             Ubah Profil
           </button>
         </aside>

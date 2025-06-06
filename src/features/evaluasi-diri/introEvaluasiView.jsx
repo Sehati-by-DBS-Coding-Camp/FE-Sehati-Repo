@@ -11,7 +11,7 @@ export default function IntroEvaluasiView() {
         <h1 className="text-center text-2xl md:text-3xl font-bold text-gray-900">
           Gunakan Sehati untuk Menilai Kesehatan Mental Anda
         </h1>
-        <hr className="border-t border-gray-300 mt-2 mb-8 w-full" />
+        <hr className="border-t border-gray-300 my-6 w-full" />
 
         <div className="grid md:grid-cols-2 gap-12 items-start">
           {/* Gambar */}
@@ -25,7 +25,7 @@ export default function IntroEvaluasiView() {
 
           {/* Konten Kanan */}
           <div
-            style={{ color: "black" }}
+            style={{ color: "#374151" }}
             className="w-full flex flex-col justify-start space-y-6 text-sm md:text-base leading-relaxed"
           >
             <p className="text-justify">

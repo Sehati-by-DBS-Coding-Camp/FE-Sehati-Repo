@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft, FaCheckCircle } from "react-icons/fa";
 
-export default function DetailRiwayat() {
+export default function DetailRiwayatViews() {
   const navigate = useNavigate();
 
   const handleRetake = () => {
-    navigate("/evaluasi-diri");
+    navigate("/intro-evaluasi");
   };
 
   const handleBackToDashboard = () => {
@@ -18,7 +18,6 @@ export default function DetailRiwayat() {
   return (
     <div className="py-6 md:py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
-        {/* Tombol Kembali */}
         <button
           onClick={() => navigate("/riwayat")}
           className="flex items-center text-sm text-green-700 hover:underline mb-4"
@@ -42,7 +41,6 @@ export default function DetailRiwayat() {
               key={index}
               className="bg-white border border-accent/40 rounded-md overflow-hidden"
             >
-              {/* Garis hijau atas */}
               <div className="h-[6px] bg-accent-700" />
 
               <div className="p-4 mt-2 text-left">
@@ -57,7 +55,6 @@ export default function DetailRiwayat() {
           ))}
         </div>
 
-        {/* Rekomendasi Section */}
         <div className="bg-green-100 p-6 rounded-lg mb-6">
           <h3 className="font-semibold text-gray-700 mb-3">Rekomendasi</h3>
           <ul className="space-y-2 text-gray-700">
@@ -70,7 +67,6 @@ export default function DetailRiwayat() {
           </ul>
         </div>
 
-        {/* Tombol Aksi */}
         <div className="flex justify-center gap-4 md:gap-6 mb-10">
           <button
             onClick={handleRetake}

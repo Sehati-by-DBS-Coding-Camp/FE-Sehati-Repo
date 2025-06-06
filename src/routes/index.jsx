@@ -1,28 +1,39 @@
-import { Routes, Route } from 'react-router-dom';
-import BerandaView from '../features/beranda/berandaView';
-import NotFoundPage from '../features/not-found/NotFoundPage';
-import MasukView from '../features/masuk/masukView';
-import DaftarView from '../features/daftar/daftarView';
-import RiwayatView from '../features/riwayat/riwayatView';
-import DetailRiwayatView from '../features/riwayat/detailRiwayatView';
-import ProfilView from '../features/profil/profilView';
-import EvaluasiDiriView from '../features/evaluasi-diri/evaluasiDiriView';
-import IntroEvaluasiView from '../features/evaluasi-diri/introEvaluasiView'; 
-import BeritaView from '../features/berita/beritaView';
+import { Routes, Route } from "react-router-dom";
+import MainLayout from "../components/MainLayout";
+
+// Import halaman
+import BerandaView from "../features/beranda/BerandaView";
+import NotFoundPage from "../features/not-found/NotFoundPage";
+import MasukView from "../features/auth/MasukView";
+import DaftarView from "../features/auth/DaftarView";
+import RiwayatView from "../features/riwayat/RiwayatViews";
+import DetailRiwayatViews from "../features/riwayat/DetailRiwayatViews";
+import ProfilView from "../features/profil/ProfilView";
+import EvaluasiDiriView from "../features/evaluasi-diri/EvaluasiDiriView";
+import IntroEvaluasiView from "../features/evaluasi-diri/IntroEvaluasiView";
+import BeritaViews from "../features/berita/BeritaViews";
+import DetailBerita from "../features/berita/DetailBeritaView";
 
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="*" element={<NotFoundPage />} />
-      <Route path="/" element={<BerandaView />} />
       <Route path="/masuk" element={<MasukView />} />
       <Route path="/daftar" element={<DaftarView />} />
-      <Route path="/riwayat" element={<RiwayatView />} />
-      <Route path="/detail-riwayat" element={<DetailRiwayatView />} />
-      <Route path="/profil" element={<ProfilView />} />
-      <Route path="/evaluasi-diri" element={<EvaluasiDiriView />} />
-      <Route path="/intro-evaluasi" element={<IntroEvaluasiView />} /> {/* ✅ Tambahkan rute ini */}
-      <Route path="/berita" element={<BeritaView />} />
+
+      {/* Halaman dengan navbar & footer */}
+      <Route element={<MainLayout />}>
+        <Route path="/" element={<BerandaView />} />
+        <Route path="/beranda" element={<BerandaView />} />
+        <Route path="/riwayat" element={<RiwayatView />} />
+        <Route path="/riwayat/:id" element={<DetailRiwayatViews />} />
+        <Route path="/detail-riwayat" element={<DetailRiwayatViews />} />
+        <Route path="/profil" element={<ProfilView />} />
+        <Route path="/evaluasi-diri" element={<EvaluasiDiriView />} />
+        <Route path="/intro-evaluasi" element={<IntroEvaluasiView />} />
+        <Route path="/berita" element={<BeritaViews />} />
+        <Route path="/berita/:id" element={<DetailBerita />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Route>
     </Routes>
   );
 };
