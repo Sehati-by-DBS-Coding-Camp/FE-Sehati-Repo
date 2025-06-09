@@ -12,6 +12,7 @@ export default function SuccessModal({ message = "Success!", onClose }) {
 
     setTimeout(() => {
       onClose && onClose();
+      window.location.reload();
     }, 300);
   };
 
@@ -22,7 +23,7 @@ export default function SuccessModal({ message = "Success!", onClose }) {
   return (
     <div
       onClick={handleClose}
-      className="fixed inset-0 flex items-center justify-center z-50 pointer-events-auto"
+      className="fixed inset-0 flex items-center justify-center z-99 pointer-events-auto"
       style={{
         backgroundColor: "rgba(0,0,0,0.3)",
 

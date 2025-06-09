@@ -18,16 +18,20 @@ function Navbar() {
   const dropdownRef = useRef(null);
   const mobileMenuRef = useRef(null);
   const [modal, setModal] = useState(null);
-  
-    const openMasuk = () => setModal("masuk");
-    const openDaftar = () => setModal("daftar");
-    const closeModal = () => setModal(null);
+
+  const openMasuk = () => setModal("masuk");
+  const openDaftar = () => setModal("daftar");
+  const closeModal = () => setModal(null);
 
   const navigate = useNavigate();
 
-  const userName = "User123";
-  const userEmail = "user123@gmail.com";
-  const userAvatarUrl = "/images/SEHATI.png";
+  const userDataString = localStorage.getItem("user");
+  const userData = userDataString ? JSON.parse(userDataString) : null;
+
+  const userName = userData?.name || "User123";
+  const userEmail = userData?.email || "user123@gmail.com";
+  const userGender = userData?.gender;
+  console.log(userGender)
 
   const toggleDropdown = () => setDropdownOpen((prev) => !prev);
   const toggleMobileMenu = () => setMobileMenuOpen((prev) => !prev);
@@ -35,11 +39,18 @@ function Navbar() {
   const handleLogout = () => {
     setDropdownOpen(false);
     setIsLoggedIn(false);
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
   };
 
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    console.log(token)
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -117,9 +128,9 @@ function Navbar() {
           <div className="hidden md:flex flex-1 justify-end space-x-4 relative">
             {!isLoggedIn ? (
               <>
-                <button 
-                onClick={openMasuk}
-                className="px-4 py-2 font-medium text-md border border-accent text-accent rounded hover:bg-accent hover:text-white transition leading-none flex items-center justify-center"
+                <button
+                  onClick={openMasuk}
+                  className="px-4 py-2 font-medium text-md border border-accent text-accent rounded hover:bg-accent hover:text-white transition leading-none flex items-center justify-center"
                 >
                   Masuk
                 </button>
@@ -135,14 +146,20 @@ function Navbar() {
               <div className="relative" ref={dropdownRef}>
                 <button
                   onClick={toggleDropdown}
-                  className="w-10 h-10 rounded-full bg-gray-300 overflow-hidden border-2 border-accent focus:outline-none"
+                  className="w-10 h-10 rounded-full bg-gray-300 overflow-hidden focus:outline-none"
                   aria-haspopup="true"
                   aria-expanded={dropdownOpen}
                   id="avatar-trigger"
                   type="button"
                 >
                   <img
-                    src={userAvatarUrl}
+                    src={
+                      userGender === "male"
+                        ? "https://avatar.iran.liara.run/public/47"
+                        : userGender === "female"
+                          ? "https://avatar.iran.liara.run/public/48"
+                          : "https://avatar.iran.liara.run/public/47"
+                    }
                     alt={`${userName}'s avatar`}
                     className="w-10 h-10 object-cover bg-white"
                   />
@@ -151,19 +168,24 @@ function Navbar() {
                 {dropdownOpen && (
                   <div
                     className={`absolute right-0 mt-1 w-48 bg-white rounded-xl shadow-lg z-50
-                                    transition-all duration-300 ease-out transform ${
-                                      dropdownOpen
-                                        ? "opacity-100 scale-100"
-                                        : "opacity-0 scale-95 pointer-events-none"
-                                    }`}
+                                    transition-all duration-300 ease-out transform ${dropdownOpen
+                        ? "opacity-100 scale-100"
+                        : "opacity-0 scale-95 pointer-events-none"
+                      }`}
                   >
                     <Link
-                      to="/profile"
+                      to="/profil"
                       className="flex items-center gap-2 px-4 py-2 text-sm text-black bg-primary hover:brightness-95 rounded-t-xl"
                       onClick={() => setDropdownOpen(false)}
                     >
                       <img
-                        src={userAvatarUrl}
+                        src={
+                          userGender === "male"
+                            ? "https://avatar.iran.liara.run/public/47"
+                            : userGender === "female"
+                              ? "https://avatar.iran.liara.run/public/48"
+                              : "https://avatar.iran.liara.run/public/47"
+                        }
                         alt={`${userName}'s avatar`}
                         className="w-6 h-6 rounded-full bg-white object-cover"
                       />
@@ -198,6 +220,8 @@ function Navbar() {
         {mobileMenuOpen && (
           <div
             className="fixed inset-0 z-50 flex backdrop-blur-sm bg-transparent"
+          // backdrop-blur-sm: memberikan blur pada background
+          // bg-transparent: transparan tanpa hitam overlay
           >
             <div
               ref={mobileMenuRef}
@@ -208,9 +232,15 @@ function Navbar() {
                 <div className="flex items-center gap-2 overflow-hidden w-full">
                   {isLoggedIn ? (
                     <>
-                      <Link to="/profile" className="flex items-center gap-3">
+                      <Link to="/profil" className="flex items-center gap-3">
                         <img
-                          src={userAvatarUrl}
+                          src={
+                            userGender === "male"
+                              ? "https://avatar.iran.liara.run/public/47"
+                              : userGender === "female"
+                                ? "https://avatar.iran.liara.run/public/48"
+                                : "https://avatar.iran.liara.run/public/47"
+                          }
                           alt={`${userName}'s avatar`}
                           className="w-14 h-14 rounded-full object-cover bg-white"
                         />
@@ -253,10 +283,9 @@ function Navbar() {
                   to="/"
                   onClick={toggleMobileMenu}
                   className={({ isActive }) =>
-                    `w-full px-4 py-2 rounded-xl text-left font-medium transition text-accent ${
-                      isActive
-                        ? "bg-white text-accent"
-                        : "bg-secondary text-black hover:bg-white"
+                    `w-full px-4 py-2 rounded-xl text-left font-medium transition text-accent ${isActive
+                      ? "bg-white text-accent"
+                      : "bg-secondary text-black hover:bg-white"
                     }`
                   }
                 >
@@ -278,10 +307,9 @@ function Navbar() {
                   to="/berita"
                   onClick={toggleMobileMenu}
                   className={({ isActive }) =>
-                    `w-full px-4 py-2 rounded-xl text-left font-medium transition text-accent ${
-                      isActive
-                        ? "bg-white text-accent"
-                        : "bg-secondary text-black hover:bg-white"
+                    `w-full px-4 py-2 rounded-xl text-left font-medium transition text-accent ${isActive
+                      ? "bg-white text-accent"
+                      : "bg-secondary text-black hover:bg-white"
                     }`
                   }
                 >
@@ -320,13 +348,12 @@ function Navbar() {
                 ) : (
                   <>
                     <NavLink
-                      to="/profile"
+                      to="/profil"
                       onClick={toggleMobileMenu}
                       className={({ isActive }) =>
-                        `w-full px-4 py-2 rounded-xl text-left font-medium transition text-accent ${
-                          isActive
-                            ? "bg-white text-accent"
-                            : "bg-secondary text-black hover:bg-white"
+                        `w-full px-4 py-2 rounded-xl text-left font-medium transition text-accent ${isActive
+                          ? "bg-white text-accent"
+                          : "bg-secondary text-black hover:bg-white"
                         }`
                       }
                     >
@@ -352,6 +379,7 @@ function Navbar() {
               </nav>
             </div>
 
+            {/* Klik area blur di luar sidebar untuk close mobile menu */}
             <div
               className="flex-1"
               onClick={() => setMobileMenuOpen(false)}

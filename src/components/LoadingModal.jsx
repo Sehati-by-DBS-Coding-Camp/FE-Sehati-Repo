@@ -9,7 +9,7 @@ export default function LoadingModal() {
     }, []);
 
     return (
-        <div className="fixed inset-0 bg-[rgba(0,0,0,0.3)] z-50 flex items-center justify-center">
+        <div className="fixed inset-0 bg-[rgba(0,0,0,0.3)] z-99 flex items-center justify-center">
             <svg
                 aria-hidden="true"
                 className="inline w-12 h-12 text-gray-200 animate-spin dark:text-gray-600 fill-accent"
