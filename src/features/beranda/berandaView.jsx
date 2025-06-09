@@ -1,18 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MasukView from "../auth/MasukView";
 import DaftarView from "../auth/DaftarView";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import SuccessModal from "../../components/SuccessModal"
 
 const BerandaView = () => {
   const [modal, setModal] = useState(null);
-
+  const navigate = useNavigate()
+  const location = useLocation();
   const openMasuk = () => setModal("masuk");
   const openDaftar = () => setModal("daftar");
   const closeModal = () => setModal(null);
-  const navigate = useNavigate();
+  const [showSuccess, setShowSuccess] = useState(false);
+  const token = localStorage.getItem("token");
+  const isLoggedIn = !!token;
+
+  useEffect(() => {
+    if (location.state?.loginSuccess) {
+      setShowSuccess(true);
+      navigate(location.pathname, { replace: true });
+    }
+  }, [location, navigate]);
 
   return (
     <>
+      {showSuccess && (
+        <SuccessModal
+          message="Login berhasil!"
+          onClose={() => setShowSuccess(false)}
+        />
+      )}
       <main className="flex flex-col items-center gap-10 px-6 py-10 sm:px-10 md:px-14 max-w-screen-xl mx-auto">
         {/* Hero Section */}
         <section className="bg-secondary w-full p-8 rounded-2xl shadow-md flex flex-col-reverse items-center gap-8 lg:gap-14 md:flex-row md:justify-between">
@@ -31,20 +48,22 @@ const BerandaView = () => {
               pertanyaan dan temukan tingkat stres, kecemasan, serta depresi –
               lengkap dengan hasil instan sebagai panduan pertolakan diri.
             </p>
-            <div className="flex justify-center md:justify-start gap-4">
-              <button
-                onClick={openMasuk}
-                className="bg-accent text-white py-2 px-6 rounded-xl text-base hover:bg-green-700 transition"
-              >
-                Masuk
-              </button>
-              <button
-                onClick={openDaftar}
-                className="border border-green-700 text-green-700 py-2 px-6 rounded-xl text-base hover:bg-green-100 transition"
-              >
-                Daftar
-              </button>
-            </div>
+            {!isLoggedIn && (
+              <div className="flex justify-center md:justify-start gap-4">
+                <button
+                  onClick={openMasuk}
+                  className="bg-accent text-white py-2 px-6 rounded-xl text-base hover:bg-green-700 transition"
+                >
+                  Masuk
+                </button>
+                <button
+                  onClick={openDaftar}
+                  className="border border-green-700 text-green-700 py-2 px-6 rounded-xl text-base hover:bg-green-100 transition"
+                >
+                  Daftar
+                </button>
+              </div>
+            )}
           </div>
 
           <div className="md:w-1/2 flex justify-center">

@@ -6,21 +6,6 @@ const DetailBeritaView = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  // Dummy data detail, nanti bisa diganti dengan API atau Presenter
-  const beritaDetail = {
-    id,
-    title: "Lorem Ipsum Detail",
-    author: "Unknown",
-    publishedDate: "2025-06-06",
-    content: `
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod elit luctus tempor feugiat. 
-      Curabitur felis risus, aliquet in luctus nec, lacinia eget metus. Pellentesque habitant morbi tristique 
-      senectus et netus et malesuada fames ac turpis egestas. 
-      Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;
-      Donec sit amet malesuada justo. 
-    `,
-  };
-
   return (
     <main className="px-4 py-6 max-w-screen-md mx-auto">
       <button
