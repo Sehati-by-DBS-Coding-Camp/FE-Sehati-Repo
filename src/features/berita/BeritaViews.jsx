@@ -39,12 +39,13 @@ const BeritaViews = () => {
               <p className="text-sm text-gray-700">{berita.description}</p>
             </div>
             <div className="mt-4">
-              <button
-                className="bg-accent text-white text-sm py-2 px-4 rounded-full hover:bg-green-600 transition"
-                onClick={() => navigate(`/berita/${berita.id}`)}
+              <a
+                href={berita.url}
+                target="_blank"
+                className="bg-accent text-white text-sm py-2 px-4 rounded-full hover:bg-green-600 transition inline-block"
               >
                 Selengkapnya →
-              </button>
+              </a>
             </div>
           </article>
         ))}

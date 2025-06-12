@@ -1,4 +1,4 @@
-const API_BASE = "http://35.219.5.8:3000/users";
+const API_BASE = "https://sehati-api.arykurnia.my.id/users";
 
 function getAuthToken() {
   return localStorage.getItem("token");
@@ -40,8 +40,13 @@ export async function updateUserProfile(data) {
     body: JSON.stringify(data),
   });
 
+  const responseBody = await res.json();
+
   if (!res.ok) {
-    throw new Error(`Failed to update user: ${res.statusText}`);
+    const errorMessage = responseBody?.message || res.statusText || "Gagal memperbarui data";
+    throw new Error(errorMessage);
   }
-  return res.json();
+
+  return responseBody;
 }
+

@@ -5,7 +5,10 @@ export function createProfilPresenter(viewCallbacks) {
     try {
       viewCallbacks.onLoadStart();
       const response = await profileModel.fetchUserProfile();
-      const userData = response.data; 
+      const userData = response.data;
+
+      localStorage.setItem("user", JSON.stringify(userData));
+
       viewCallbacks.onLoadSuccess(userData);
     } catch (error) {
       viewCallbacks.onLoadError(error.message);
@@ -14,13 +17,15 @@ export function createProfilPresenter(viewCallbacks) {
 
   const updateUser = async (data) => {
     try {
+      console.log("updateUser: Mengirim data ke model", data);
       const response = await profileModel.updateUserProfile(data);
-      const updatedUser = response.data; 
-      viewCallbacks.onUpdateSuccess(updatedUser);
+      console.log("updateUser: Respons diterima", response);
     } catch (error) {
-      viewCallbacks.onUpdateError(error.message);
+      console.error("Terjadi kesalahan", error.message);
+      throw error;
     }
   };
+
 
   return {
     loadUser,

@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { handleRegister } from "./daftarPresenter";
 import LoadingModal from "../../components/LoadingModal";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const DaftarView = ({ onClose, handleMasuk }) => {
   const navigate = useNavigate();
@@ -19,7 +21,7 @@ const DaftarView = ({ onClose, handleMasuk }) => {
     email: "",
     password: "",
     birth: "",
-    gender: "laki-laki",
+    gender: "",
   });
 
   const handleChange = (e) => {
@@ -36,13 +38,14 @@ const DaftarView = ({ onClose, handleMasuk }) => {
     setLoading(true);
 
     const { success, error } = await handleRegister(formData);
+    console.log(formData)
     if (success) {
       setLoading(false);
-      alert("Registrasi berhasil! Silakan masuk.");
+      toast.success("Registrasi Berhasil, Silahkan Masuk");
       handleMasuk()
     } else {
       setLoading(false);
-      alert(`Gagal registrasi: ${error}`);
+      toast.error("Registrasi Gagal");
     }
   };
 
@@ -67,7 +70,7 @@ const DaftarView = ({ onClose, handleMasuk }) => {
           {/* Kanan - Form Registrasi */}
           <div className="w-full md:w-1/2 bg-[#f0fefb] p-4 sm:p-6 flex flex-col justify-center items-center">
             <img
-              src="../../../public/images/SEHATI.png"
+              src="/images/SEHATI.png"
               alt="SEHATI"
               className="w-12 mb-2"
             />
@@ -129,7 +132,7 @@ const DaftarView = ({ onClose, handleMasuk }) => {
                       type="radio"
                       name="gender"
                       value="male"
-                      checked={formData.gender === "Laki-laki"}
+                      checked={formData.gender === "male"}
                       onChange={handleChange}
                     />
                     <span>Laki-laki</span>
